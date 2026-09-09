@@ -1,0 +1,19 @@
+# CALIBRATE CAMERA SCRIPT
+## ON THE CAMERA USED
+  A) По умолчанию берётся встроенная камера (индекс 0). 
+  B) Чтобы калибровать сетевую камеру, положите конфиг в папку camera_config РЯДОМ с папкой проекта:
+      <папка с проектом>/
+      ├── camera_calibration/      <- этот репозиторий
+      └── camera_config/
+          └── config.json {"video_source": "rtsp://user:pass@192.168.1.10:554/stream1"}
+  Если файла нет или он не читается, скрипт напечатает причину и возьмёт
+  встроенную камеру.
+
+## LAUNCH IT
+ cd /Volumes/T7_Shield/projects/computer_vision/camera_calibration
+.venv/bin/python calibrate_camera.py
+
+## RESULT
+1) Результат сохраняется в camera_calibration.json и выводится в консоль
+2) Каждый сохранённый кадр пишется в frames/<дата>_<время>/ рядом со скриптом:
+frame_NN.png — оригинал, frame_NN_corners.png — он же с найденными углами.
