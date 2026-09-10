@@ -11,12 +11,6 @@
   2. Измерьте реальный размер одной клетки доски в метрах (SQUARE_SIZE_M).
   3. Приклейте доску на что-то жёсткое и ровное (иначе калибровка будет неточной).
 
-Использование:
-  python calibrate_camera.py
-  - 's' — сохранить текущий кадр как калибровочный (доска должна быть найдена, углы подсвечены зелёным)
-  - 'c' — запустить калибровку по накопленным кадрам (нужно минимум 10-15 кадров)
-  - 'q' — выйти без калибровки
-
 Снимайте доску под разными углами и с разных расстояний, включая края кадра —
 это критично для точной оценки дисторсии.
 
@@ -32,7 +26,7 @@ import numpy as np
 
 # Конфиг с источником видео лежит в папке рядом с папкой проекта
 # Формат файла: {"video_source": "rtsp://user:pass@192.168.1.10:554/stream1"}
-CONFIG_PATH = Path(__file__).resolve().parent.parent / "camera_config" / "config.json"
+CONFIG_PATH = Path(__file__).resolve().parent.parent / "camera_config" / "camera_config.json"
 
 # Чем пользуемся, если конфига нет: 0 — встроенная камера
 DEFAULT_VIDEO_SOURCE = 0
@@ -82,7 +76,7 @@ def open_video_capture(source: int | str) -> cv2.VideoCapture:
         # доски с субпиксельной точностью — битый кадр испортит калибровку.
         os.environ.setdefault("OPENCV_FFMPEG_CAPTURE_OPTIONS", "rtsp_transport;tcp")
 
-    cap = cv2.VideoCapture(source)
+    cap = cv2.VideoCapture(source, cv2.CAP_FFMPEG)
     if not cap.isOpened():
         raise RuntimeError("Не удалось открыть источник видео")
     return cap
@@ -126,6 +120,7 @@ OBJECT_POINTS_3D = build_object_points(CHESSBOARD_SIZE, SQUARE_SIZE_M)
 
 
 def main():
+    print('Start')
     object_points = []  # 3D точки в пространстве доски, для каждого кадра
     image_points = []  # соответствующие 2D точки на изображении
 

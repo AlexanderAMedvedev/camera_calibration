@@ -9,9 +9,23 @@
   Если файла нет или он не читается, скрипт напечатает причину и возьмёт
   встроенную камеру.
 
+## PREPARE GIT
+git config user.name "Рабочее Имя"
+git config user.email "work_email@company.com"
+
 ## LAUNCH IT
- cd /Volumes/T7_Shield/projects/computer_vision/camera_calibration
-.venv/bin/python calibrate_camera.py
+### Power shell
+python3 -m venv .venv
+Set-ExecutionPolicy -Scope CurrentUser
+  RemoteSigned
+.venv\Scripts\Activate.ps1
+pip install opencv-python numpy
+.venv\Scripts\python.exe calibrate_camera.py  
+
+## USE IT
+  - 's' — сохранить текущий кадр как калибровочный (доска должна быть найдена, углы подсвечены зелёным)
+  - 'c' — запустить калибровку по накопленным кадрам (нужно минимум 10-15 кадров)
+  - 'q' — выйти без калибровки
 
 ## RESULT
 1) Результат сохраняется в camera_calibration.json и выводится в консоль
