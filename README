@@ -7,7 +7,7 @@
       └── camera_config/
           └── config.json {"video_source": "rtsp://user:pass@192.168.1.10:554/stream1"}
   Если файла нет или он не читается, скрипт напечатает причину и возьмёт
-  встроенную камеру.
+  встроенную камеру (rtsp - Real Time Streaming Protocol)
 
 ## PREPARE GIT
 git config user.name "Рабочее Имя"
@@ -15,12 +15,12 @@ git config user.email "work_email@company.com"
 
 ## LAUNCH IT
 ### Power shell
-python3 -m venv .venv
-Set-ExecutionPolicy -Scope CurrentUser
-  RemoteSigned
-.venv\Scripts\Activate.ps1
-pip install opencv-python numpy
-.venv\Scripts\python.exe calibrate_camera.py  
+- python3 -m venv .venv
+- Set-ExecutionPolicy -Scope CurrentUser
+  tell: RemoteSigned
+- .venv\Scripts\Activate.ps1
+- pip install opencv-python numpy
+- .venv\Scripts\python.exe calibrate_camera.py  
 
 ## USE IT
   - 's' — сохранить текущий кадр как калибровочный (доска должна быть найдена, углы подсвечены зелёным)
