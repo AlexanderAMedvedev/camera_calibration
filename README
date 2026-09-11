@@ -28,6 +28,6 @@ git config user.email "work_email@company.com"
   - 'q' — выйти без калибровки
 
 ## RESULT
-1) Результат сохраняется в camera_calibration.json и выводится в консоль
+1) Результат сохраняется в frames/<дата>_<время>/camera_calibration.json и выводится в консоль
 2) Каждый сохранённый кадр пишется в frames/<дата>_<время>/ рядом со скриптом:
 frame_NN.png — оригинал, frame_NN_corners.png — он же с найденными углами.
