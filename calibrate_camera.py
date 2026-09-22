@@ -20,12 +20,12 @@
 """
 
 import json
-import os
 from datetime import datetime
 from pathlib import Path
 
 import cv2
 import numpy as np
+import cv_shared
 
 # длина стороны одной клетки доски (метры)
 SQUARE_SIZE_M = 0.024
@@ -49,30 +49,6 @@ MIN_FRAMES_FOR_CALIBRATION = 1
 # реально мёртвый поток не будет висеть.
 MAX_READ_FAILURES = 30
 READ_RETRY_DELAY_MS = 100
-
-def load_video_source() -> int | str:
-    try:
-        with open(CONFIG_PATH) as f:
-            return json.load(f)['video_source']
-    except (OSError, ValueError, KeyError) as error:
-        print(f'Конфиг {CONFIG_PATH} не прочитан ({error}),' +
-               'используем встроенную камеру')
-        return DEFAULT_VIDEO_SOURCE
-
-
-def open_video_capture(source: int | str) -> cv2.VideoCapture:
-    if isinstance(source, str) and source.startswith('rtsp://'):
-        # У VideoCapture нет параметра для транспорта RTSP, ffmpeg читает опции
-        # из этой переменной окружения в момент открытия потока. TCP вместо UDP:
-        # при потере пакетов кадр приходит с артефактами, а по нему ищут углы
-        # доски с субпиксельной точностью — битый кадр испортит калибровку.
-        os.environ.setdefault('OPENCV_FFMPEG_CAPTURE_OPTIONS',
-                              'rtsp_transport;tcp')
-
-    cap = cv2.VideoCapture(source)
-    if not cap.isOpened():
-        raise RuntimeError('Не удалось открыть источник видео')
-    return cap
 
 
 def save_calibration_frame(session_dir: Path, index: int, frame: np.ndarray, 
@@ -114,7 +90,8 @@ def main():
 # фрейм - отдельный кадр в последовательности изображений, 
 # из которых состоит видео
 
-    cap = open_video_capture(load_video_source())
+    cap = cv_shared.open_video_capture(
+        cv_shared.load_video_source(CONFIG_PATH, DEFAULT_VIDEO_SOURCE))
     try:
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,
                      30, 0.001)
