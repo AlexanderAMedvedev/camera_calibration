@@ -3,4 +3,4 @@ __pycache__/
 *.pyc
 
 # кадры калибровочных сессий
-frames/
+frame_*.png
