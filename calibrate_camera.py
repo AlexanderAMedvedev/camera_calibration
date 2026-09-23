@@ -178,6 +178,8 @@ def main():
         "fy": fy,
         "cx": cx,
         "cy": cy,
+        # on the distortion coefficients:
+        # https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html
         "dist_coeffs": dist_coeffs.flatten().tolist(),
     }
 
