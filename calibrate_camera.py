@@ -49,6 +49,8 @@ MIN_FRAMES_FOR_CALIBRATION = 1
 # реально мёртвый поток не будет висеть.
 MAX_READ_FAILURES = 30
 READ_RETRY_DELAY_MS = 100
+#
+RESULT_FILENAME='camera_calibration_result'
 
 
 def save_calibration_frame(session_dir: Path, index: int, frame: np.ndarray, 
@@ -183,11 +185,11 @@ def main():
         "dist_coeffs": dist_coeffs.flatten().tolist(),
     }
 
-    with open(f'{session_dir}/camera_calibration.json', 'w') as f:
+    with open(f'{session_dir}/{RESULT_FILENAME}.json', 'w') as f:
         json.dump(result, f, indent=2)
 
     print(f"\nRMS ошибка репроекции: {rms_error:.4f} (хорошо, если < 0.5-1.0 px)")
-    print("Результат сохранён в camera_calibration.json")
+    print(f"Результат сохранён в {RESULT_FILENAME}.json")
     print(f"f_x = {fx:.2f}")
     print(f"f_y = {fy:.2f}")
     print(f"c_x = {cx:.2f}")
